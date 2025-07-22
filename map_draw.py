@@ -59,7 +59,7 @@ raw_map.to_csv('sorted_raw_map.csv', index=False)
 # sorted_raw_map을 CSV 파일로 저장
 plt.savefig('map.png', dpi=300)
 # map.png 파일로 저장
-print('=== Map saved as \'map.png\' ===')
+print('=== Map saved as 'map.png' ===')
 plt.show()  # plot을 새 창에다가 띄워줍니다. 
 
 # 주의사항: plot 창을 닫아야 코드가 종료됩니다!
