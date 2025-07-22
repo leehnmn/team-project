@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # CSV 파일을 읽어옵니다.
 area_map = pd.read_csv('area_map.csv')
