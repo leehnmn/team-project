@@ -31,7 +31,7 @@ plt.show()
 import pandas as pd
 
 # 데이터 불러오기
-df = pd.read_csv('area1_data.csv')
+df = pd.read_csv('area_map.csv')
 
 # Construction Site가 표시된 구획 처리
 df.loc[df['ConstructionSite'] == 1, 'struct'] = 'Construction Site'
