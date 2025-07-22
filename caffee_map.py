@@ -1,37 +1,60 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 
-# CSV 불러오기 (혹은 분석 결과에서 바로 사용 가능)
-df = pd.read_csv('area1_data.csv')
+# CSV 파일을 읽어옵니다.
+area_map = pd.read_csv('area_map.csv')
+area_struct = pd.read_csv('area_struct.csv')
+area_category = pd.read_csv('area_category.csv')
 
-# 'ConstructionSite'가 1인 경우 struct 이름 변경
-df.loc[df['ConstructionSite'] == 1, 'struct'] = 'ConstructionSite'
+# area_map 출력
+print("=== area_map.csv ===")
+print(area_map)
 
-# struct 값이 없는 경우 '기타'로 채우기
-df['struct'] = df['struct'].fillna('기타')
+# area_struct 출력
+print("\n=== area_struct.csv ===")
+print(area_struct)
 
-# 구조물 종류별 개수 집계
-summary = df['struct'].value_counts().reset_index()
-summary.columns = ['구조물 종류', '개수']
+# area_category 출력
+print("\n=== area_category.csv ===")
+print(area_category)
 
-# 📊 막대 그래프 생성
-plt.figure(figsize=(8, 6))
-plt.bar(summary['구조물 종류'], summary['개수'], color='skyblue')
-plt.title('구조물 종류별 통계')
-plt.xlabel('구조물 종류')
-plt.ylabel('개수')
-plt.xticks(rotation=45)
-plt.tight_layout()
+# area_struct와 area_category를 category를 기준으로 병합
+struct_with_name = pd.merge(
+    area_struct, area_category,
+    how="left",               # area_struct를 기준으로 병합 (왼쪽 기준)
+    left_on="category",
+    right_on="category"
+)
 
-# 이미지로 저장
-plt.savefig('structure_summary_chart.png')
-plt.show()
+# 병합된 struct_with_name 출력
+print("\n=== area_struct + area_category (category 기준 병합) ===")
+print(struct_with_name)
+
+# struct_with_name과 area_map을 x, y 좌표 기준으로 병합
+full_map = pd.merge(
+    struct_with_name, area_map,
+    how="left",
+    on=['x', 'y']
+)
+
+# area 기준으로 정렬
+full_map = full_map.sort_values(by='area')
+
+# 전체 병합된 full_map 출력
+print("\n=== 모든 파일 병합 결과 (full_map) ===")
+print(full_map)
+
+# area가 1인 데이터만 추출
+area1_data = full_map[full_map['area'] == 1]
+
+# area == 1인 데이터 출력
+print("\n=== area == 1인 지역만 필터링한 결과 ===")
+print(area1_data)
 
 # 1단계 보너스 과제
 import pandas as pd
 
 # 데이터 불러오기
-df = pd.read_csv('area_map.csv')
+df = pd.read_csv('full_map.csv')
 
 # Construction Site가 표시된 구획 처리
 df.loc[df['ConstructionSite'] == 1, 'struct'] = 'Construction Site'
