@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 df = pd.read_csv('area1_data.csv')
 
 # 'ConstructionSite'가 1인 경우 struct 이름 변경
-df.loc[df['ConstructionSite'] == 1, 'struct'] = 'ConstructionSite'
+df.loc[df['Construction_Site'] == 1, 'struct'] = 'Construction_Site'
 
 # struct 값이 없는 경우 '기타'로 채우기
 df['struct'] = df['struct'].fillna('기타')
